@@ -1,0 +1,34 @@
+# Topología estrella: un segmento L2 (switch virtual = red Docker).
+# Todos los nodos cuelgan del mismo bridge.
+
+services:
+  pc-a:
+    image: lab-host:local
+    hostname: pc-a
+    networks:
+      estrella:
+
+  pc-b:
+    image: lab-host:local
+    hostname: pc-b
+    networks:
+      estrella:
+
+  pc-c:
+    image: lab-host:local
+    hostname: pc-c
+    networks:
+      estrella:
+
+  pc-d:
+    image: lab-host:local
+    hostname: pc-d
+    networks:
+      estrella:
+
+networks:
+  estrella:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.10.0/24

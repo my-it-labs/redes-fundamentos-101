@@ -1,0 +1,23 @@
+services:
+  servidor-sftp:
+    image: atmoz/sftp
+    hostname: servidor-sftp
+    command: alumno:lab101:1001
+    networks:
+      lan-ftp:
+        ipv4_address: 192.168.54.10
+    volumes:
+      - ./datos:/home/alumno/datos
+
+  cliente-ftp:
+    image: lab-host:local
+    hostname: cliente-ftp
+    networks:
+      lan-ftp:
+        ipv4_address: 192.168.54.20
+
+networks:
+  lan-ftp:
+    ipam:
+      config:
+        - subnet: 192.168.54.0/24

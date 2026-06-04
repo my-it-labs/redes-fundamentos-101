@@ -1,0 +1,29 @@
+# Tres equipos en el mismo segmento (tabla de vecinos / MAC).
+
+services:
+  pc-1:
+    image: lab-host:local
+    hostname: pc-1
+    networks:
+      segmento:
+        ipv4_address: 192.168.58.11
+
+  pc-2:
+    image: lab-host:local
+    hostname: pc-2
+    networks:
+      segmento:
+        ipv4_address: 192.168.58.12
+
+  pc-3:
+    image: lab-host:local
+    hostname: pc-3
+    networks:
+      segmento:
+        ipv4_address: 192.168.58.13
+
+networks:
+  segmento:
+    ipam:
+      config:
+        - subnet: 192.168.58.0/24

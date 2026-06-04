@@ -1,0 +1,31 @@
+services:
+  servidor-dns:
+    image: strm/dnsmasq
+    hostname: servidor-dns
+    volumes:
+      - ./dnsmasq.conf:/etc/dnsmasq.conf
+    networks:
+      lan-dns:
+        ipv4_address: 192.168.52.2
+
+  cliente-dns:
+    image: lab-host:local
+    hostname: cliente-dns
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan-dns:
+        ipv4_address: 192.168.52.10
+
+  servidor-web:
+    image: lab-host:local
+    hostname: servidor-web
+    networks:
+      lan-dns:
+        ipv4_address: 192.168.52.20
+
+networks:
+  lan-dns:
+    ipam:
+      config:
+        - subnet: 192.168.52.0/24

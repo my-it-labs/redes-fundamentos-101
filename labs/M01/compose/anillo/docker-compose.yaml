@@ -1,0 +1,76 @@
+# Anillo: cada nodo une dos segmentos. Tras `up`, ejecuta ./montar-rutas.sh
+
+services:
+  nodo-a:
+    image: lab-host:local
+    hostname: nodo-a
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    networks:
+      ab:
+        ipv4_address: 10.10.1.2
+      da:
+        ipv4_address: 10.10.4.2
+
+  nodo-b:
+    image: lab-host:local
+    hostname: nodo-b
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    networks:
+      ab:
+        ipv4_address: 10.10.1.3
+      bc:
+        ipv4_address: 10.10.2.2
+
+  nodo-c:
+    image: lab-host:local
+    hostname: nodo-c
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    networks:
+      bc:
+        ipv4_address: 10.10.2.3
+      cd:
+        ipv4_address: 10.10.3.2
+
+  nodo-d:
+    image: lab-host:local
+    hostname: nodo-d
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    networks:
+      cd:
+        ipv4_address: 10.10.3.3
+      da:
+        ipv4_address: 10.10.4.3
+
+networks:
+  ab:
+    ipam:
+      config:
+        - subnet: 10.10.1.0/29
+          gateway: 10.10.1.1
+  bc:
+    ipam:
+      config:
+        - subnet: 10.10.2.0/29
+          gateway: 10.10.2.1
+  cd:
+    ipam:
+      config:
+        - subnet: 10.10.3.0/29
+          gateway: 10.10.3.1
+  da:
+    ipam:
+      config:
+        - subnet: 10.10.4.0/29
+          gateway: 10.10.4.1

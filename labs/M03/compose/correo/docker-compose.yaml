@@ -1,0 +1,23 @@
+services:
+  servidor-smtp:
+    image: boky/postfix
+    hostname: servidor-smtp
+    environment:
+      ALLOWED_SENDER_DOMAINS: lab.local
+      HOSTNAME: mail.lab.local
+    networks:
+      lan-mail:
+        ipv4_address: 192.168.55.10
+
+  cliente-mail:
+    image: lab-host:local
+    hostname: cliente-mail
+    networks:
+      lan-mail:
+        ipv4_address: 192.168.55.20
+
+networks:
+  lan-mail:
+    ipam:
+      config:
+        - subnet: 192.168.55.0/24

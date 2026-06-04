@@ -1,0 +1,43 @@
+# Dos subredes /26 unidas por un router (M02-02).
+
+services:
+  pc-red-a:
+    image: lab-host:local
+    hostname: pc-red-a
+    cap_add:
+      - NET_ADMIN
+    networks:
+      red-a:
+        ipv4_address: 192.168.100.10
+
+  pc-red-b:
+    image: lab-host:local
+    hostname: pc-red-b
+    cap_add:
+      - NET_ADMIN
+    networks:
+      red-b:
+        ipv4_address: 192.168.100.74
+
+  router:
+    image: lab-host:local
+    hostname: router
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    networks:
+      red-a:
+        ipv4_address: 192.168.100.62
+      red-b:
+        ipv4_address: 192.168.100.126
+
+networks:
+  red-a:
+    ipam:
+      config:
+        - subnet: 192.168.100.0/26
+  red-b:
+    ipam:
+      config:
+        - subnet: 192.168.100.64/26

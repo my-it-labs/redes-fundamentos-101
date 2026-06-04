@@ -1,0 +1,24 @@
+# Servidor web + cliente para mapear capas (M06).
+
+services:
+  servidor-web:
+    image: lab-host:local
+    hostname: servidor-web
+    command: >
+      bash -c "python3 -m http.server 80 --bind 0.0.0.0 & sleep infinity"
+    networks:
+      capas:
+        ipv4_address: 192.168.57.10
+
+  cliente-capas:
+    image: lab-host:local
+    hostname: cliente-capas
+    networks:
+      capas:
+        ipv4_address: 192.168.57.20
+
+networks:
+  capas:
+    ipam:
+      config:
+        - subnet: 192.168.57.0/24

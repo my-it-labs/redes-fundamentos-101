@@ -1,0 +1,22 @@
+# Una subred /26 para practicar CIDR (M02-01).
+
+services:
+  host-1:
+    image: lab-host:local
+    hostname: host-1
+    networks:
+      lan:
+        ipv4_address: 192.168.50.10
+
+  host-2:
+    image: lab-host:local
+    hostname: host-2
+    networks:
+      lan:
+        ipv4_address: 192.168.50.20
+
+networks:
+  lan:
+    ipam:
+      config:
+        - subnet: 192.168.50.0/26

@@ -1,0 +1,50 @@
+# PAT: varios hosts en LAN comparten un gateway con una IP en la red "internet".
+
+services:
+  cliente-1:
+    image: lab-host:local
+    hostname: cliente-1
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan-interna:
+        ipv4_address: 10.200.1.50
+
+  cliente-2:
+    image: lab-host:local
+    hostname: cliente-2
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan-interna:
+        ipv4_address: 10.200.1.51
+
+  servidor-internet:
+    image: lab-host:local
+    hostname: servidor-internet
+    networks:
+      internet:
+        ipv4_address: 10.200.100.10
+
+  gateway-nat:
+    image: lab-host:local
+    hostname: gateway-nat
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+    networks:
+      lan-interna:
+        ipv4_address: 10.200.1.254
+      internet:
+        ipv4_address: 10.200.100.254
+
+networks:
+  lan-interna:
+    ipam:
+      config:
+        - subnet: 10.200.1.0/24
+  internet:
+    ipam:
+      config:
+        - subnet: 10.200.100.0/24

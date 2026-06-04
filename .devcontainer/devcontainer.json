@@ -1,0 +1,12 @@
+{
+  "name": "redes-fundamentos-101",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    }
+  },
+  "postCreateCommand": "docker build -t lab-host:local -f labs/_infra/Dockerfile.lab-host labs/_infra",
+  "remoteUser": "vscode"
+}

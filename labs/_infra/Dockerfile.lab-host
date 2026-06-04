@@ -1,0 +1,19 @@
+FROM ubuntu:24.04
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        iproute2 \
+        iputils-ping \
+        curl \
+        dnsutils \
+        iptables \
+        netcat-openbsd \
+        traceroute \
+        iputils-tracepath \
+        isc-dhcp-client \
+        openssh-client \
+        python3-minimal \
+        socat \
+    && rm -rf /var/lib/apt/lists/*
+
+CMD ["sleep", "infinity"]

@@ -1,0 +1,24 @@
+services:
+  servidor:
+    image: lab-host:local
+    hostname: servidor
+    command: >
+      bash -c "python3 -m http.server 8080 --bind 0.0.0.0 &
+      socat UDP-LISTEN:9999,fork EXEC:'cat' &
+      sleep infinity"
+    networks:
+      apps:
+        ipv4_address: 192.168.56.10
+
+  cliente:
+    image: lab-host:local
+    hostname: cliente
+    networks:
+      apps:
+        ipv4_address: 192.168.56.20
+
+networks:
+  apps:
+    ipam:
+      config:
+        - subnet: 192.168.56.0/24

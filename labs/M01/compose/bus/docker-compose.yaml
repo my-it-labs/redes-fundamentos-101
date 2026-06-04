@@ -1,0 +1,34 @@
+# Topología bus: un medio compartido (misma idea L2 que estrella en Docker;
+# el laboratorio contrasta comportamiento al caer un nodo vs el anillo).
+
+services:
+  nodo-1:
+    image: lab-host:local
+    hostname: nodo-1
+    networks:
+      bus:
+
+  nodo-2:
+    image: lab-host:local
+    hostname: nodo-2
+    networks:
+      bus:
+
+  nodo-3:
+    image: lab-host:local
+    hostname: nodo-3
+    networks:
+      bus:
+
+  nodo-4:
+    image: lab-host:local
+    hostname: nodo-4
+    networks:
+      bus:
+
+networks:
+  bus:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.20.0/24

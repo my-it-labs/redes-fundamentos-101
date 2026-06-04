@@ -1,0 +1,23 @@
+services:
+  servidor-dhcp:
+    image: strm/dnsmasq
+    hostname: servidor-dhcp
+    volumes:
+      - ./dnsmasq-dhcp.conf:/etc/dnsmasq.conf
+    networks:
+      lan-dhcp:
+        ipv4_address: 192.168.53.254
+
+  cliente-dhcp:
+    image: lab-host:local
+    hostname: cliente-dhcp
+    cap_add:
+      - NET_ADMIN
+    networks:
+      lan-dhcp:
+
+networks:
+  lan-dhcp:
+    ipam:
+      config:
+        - subnet: 192.168.53.0/24
