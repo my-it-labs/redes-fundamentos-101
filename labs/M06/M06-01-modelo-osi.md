@@ -20,6 +20,20 @@ Conceptos: [Glosario de términos](../../docs/glosario-terminos.md) · Comandos:
 
 **Aprende:** cuando el servicio responde, puedes recorrer de abajo arriba: L2 (vecino), L3 (IP), L4 (puerto), L7 (HTTP).
 
+#### Maqueta `compose/capas` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `servidor-web` (HTTP :80), `cliente-capas` |
+| **Red** | `capas` → `192.168.57.0/24` |
+| **IPs** | Servidor `.10`, cliente `.20` |
+| **Uso** | Diagnosticar fallos capa por capa (`ping` → `ss` → `curl`) |
+
+```mermaid
+flowchart LR
+  CLI[cliente-capas .20] -->|"L3 ping / L4 puerto / L7 curl"| SRV[servidor-web .10 :80]
+```
+
 **Levantar la maqueta:**
 
 ```bash

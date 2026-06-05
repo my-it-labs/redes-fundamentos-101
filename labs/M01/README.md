@@ -13,7 +13,7 @@
 
 - Cada paso combina **práctica** con **qué observas y por qué**.
 - Los diagramas los aporta el repo (`labs/M01/compose/`); tú montas la red y compruebas hipótesis (qué debería fallar y qué no).
-- En cada paso: **levantar la maqueta** → **acceder al sistema** → comandos **dentro del sistema** (`ping`, `ip`, …).
+- En cada paso: **levantar la maqueta** → **acceder al sistema** → comandos **dentro del sistema** (`ping`, `ip`, …). Los guiones explican **cómo leer la salida** (empezando en M01-01).
 - Abre el curso en **Codespace** (recomendado) o en Linux con `docker compose`; ver [.devcontainer/](../../.devcontainer/devcontainer.json).
 
 ## Ejercicios

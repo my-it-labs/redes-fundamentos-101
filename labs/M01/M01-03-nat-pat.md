@@ -31,6 +31,32 @@ LAN interna (10.200.1.0/24)          Red "internet" (10.200.100.0/24)
 
 **Aprende:** el **PAT** (NAT sobrecarga) es el modo habitual en hogar y oficinas: todos comparten **una** IP hacia fuera y se distinguen por **puerto** traducido.
 
+#### Maqueta `compose/nat-pat` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `cliente-1`, `cliente-2`, `gateway-nat`, `servidor-internet` |
+| **LAN interna** | `10.200.1.0/24` — clientes `.50`, `.51`; gateway `.254` |
+| **Internet simulada** | `10.200.100.0/24` — servidor `.10`; gateway `.254` |
+| **Script** | `./montar-nat.sh` (rutas + MASQUERADE en `gateway-nat`) |
+
+```mermaid
+flowchart LR
+  subgraph lan["LAN 10.200.1.0/24"]
+    C1[cliente-1 .50]
+    C2[cliente-2 .51]
+    GW[gateway-nat .254]
+    C1 --- GW
+    C2 --- GW
+  end
+  subgraph inet["Internet sim. 10.200.100.0/24"]
+    SRV[servidor-internet .10]
+    GW2[gateway-nat .254]
+    GW --- GW2
+    GW2 --- SRV
+  end
+```
+
 **Levantar la maqueta:**
 
 ```bash

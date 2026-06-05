@@ -20,6 +20,29 @@ En cada paso: **levantar la maqueta** → **acceder al sistema** (`docker compos
 
 **Haces:** leer la configuración IP en `pc-a` de la topología estrella.
 
+#### Maqueta `compose/estrella` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `pc-a`, `pc-b`, `pc-c`, `pc-d` |
+| **Red** | `estrella` → `172.31.10.0/24` |
+| **Capa** | Solo **L2** (sin router) |
+
+```mermaid
+flowchart TB
+  subgraph estrella["172.31.10.0/24"]
+    SW((switch L2))
+    pc_a[pc-a]
+    pc_b[pc-b]
+    pc_c[pc-c]
+    pc_d[pc-d]
+    pc_a --- SW
+    pc_b --- SW
+    pc_c --- SW
+    pc_d --- SW
+  end
+```
+
 **Levantar la maqueta:**
 
 ```bash
@@ -44,6 +67,8 @@ ip route show default
 
 - Una dirección en `172.31.10.0/24` (rango privado).
 - Puede **no haber** ruta por defecto — en estrella L2 puro a veces solo hay red local.
+
+**Cómo interpretarlo:** busca la línea `inet …/24` bajo `eth0` (no confundir con `lo` / `127.0.0.1`). Guía campo a campo en [M01-01 paso 1](M01-01-tipos-redes-topologias.md) (sección *Cómo leer `ip -4 addr show`*).
 
 **Por qué:** la maqueta asigna IP privada a cada sistema en la red `estrella`. Esa IP solo vale **dentro** de esa LAN simulada; ningún router de internet la conoce.
 
@@ -105,6 +130,29 @@ El `curl` sale desde **tu puesto**, no desde `pc-a`. Por eso M01-03 montará NAT
 **Aprende:** el mismo rango privado puede repetirse en empresas distintas sin conflicto hasta que se **unan** redes sin NAT.
 
 **Haces:** comparar un PC y un router en la maqueta `empresa`.
+
+#### Maqueta `compose/empresa` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | 3 PCs + 3 gateways (`gw-oficina`, `gw-sucursal-1`, `gw-sucursal-2`) |
+| **LANs** | `192.168.10/20/30.0/24` (oficina y dos sucursales) |
+| **WAN** | `wan-mpls` `10.255.0.0/24` entre los `gw-*` |
+| **Script** | `./montar-rutas.sh` tras `up -d` |
+
+```mermaid
+flowchart LR
+  subgraph L1["LAN 192.168.10.0/24"]
+    PCO[pc-oficina] --- GWO[gw-oficina]
+  end
+  subgraph L2["LAN 192.168.20.0/24"]
+    PCS1[pc-sucursal-1] --- GWS1[gw-sucursal-1]
+  end
+  subgraph L3["LAN 192.168.30.0/24"]
+    PCS2[pc-sucursal-2] --- GWS2[gw-sucursal-2]
+  end
+  GWO --- GWS1 --- GWS2
+```
 
 **Levantar la maqueta:**
 

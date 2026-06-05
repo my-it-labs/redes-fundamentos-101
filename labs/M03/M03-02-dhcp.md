@@ -30,6 +30,21 @@ servidor-dhcp (192.168.53.254)  ──oferta──►  cliente-dhcp
 
 **Aprende:** el servidor DHCP define **pool**, máscara y opciones (gateway, DNS, lease time).
 
+#### Maqueta `compose/dhcp` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `servidor-dhcp` (dnsmasq), `cliente-dhcp` |
+| **Red** | `lan-dhcp` → `192.168.53.0/24` |
+| **Servidor** | `192.168.53.254` — pool `.100`–`.150`, gateway `.254` |
+| **Cliente** | Sin IP fija; obtiene lease con `dhclient` |
+
+```mermaid
+flowchart LR
+  SRV[servidor-dhcp .254] -->|"UDP 67 DHCP"| CLI[cliente-dhcp]
+  SRV -.->|"ofrece IP + router"| CLI
+```
+
 **Levantar la maqueta:**
 
 ```bash

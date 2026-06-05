@@ -34,6 +34,22 @@ En cada paso: **levantar la maqueta** → editar compose si toca → **acceder a
 
 **Haces:** en `labs/M08/compose/departamentos/docker-compose.yaml`, añade red `vlan-voz`, servicio `pc-voz` y tercera interfaz en `router-vlan` (IP `10.80.30.254`). Extiende `montar-rutas.sh` con rutas para `pc-voz` y el router.
 
+#### Maqueta `compose/departamentos` — qué levantas (tras tu edición)
+
+| Qué añades | Detalle |
+|------------|---------|
+| **Red** | `vlan-voz` → `10.80.30.0/24` |
+| **Sistema** | `pc-voz` `.10` |
+| **Router** | Tercera interfaz `router-vlan` `.254` en VLAN voz |
+| **Script** | Rutas en `montar-rutas.sh` para el nuevo segmento |
+
+```mermaid
+flowchart TB
+  PV[pc-ventas VLAN10] --> R[router-vlan]
+  PR[pc-rrhh VLAN20] --> R
+  PZ[pc-voz VLAN30] --> R
+```
+
 **Levantar la maqueta:**
 
 ```bash

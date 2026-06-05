@@ -30,6 +30,19 @@ Un **socket** es el extremo de la comunicación (dirección + puerto + protocolo
 
 ### Paso 1 — Levantar la maqueta
 
+#### Maqueta `compose/servicios` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `servidor` y `cliente` en `192.168.56.0/24` |
+| **Uso en este lab** | No usas los listeners del compose; tú lanzas `nc -l` a mano en el servidor |
+| **Puerto práctica** | TCP **7777** — chat cliente-servidor |
+
+```mermaid
+flowchart LR
+  SRV[servidor .10] <-->|"TCP 7777 nc"| CLI[cliente .20]
+```
+
 **Levantar la maqueta:**
 
 ```bash

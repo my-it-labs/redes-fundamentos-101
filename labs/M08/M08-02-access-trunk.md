@@ -35,6 +35,21 @@ En cada paso combina **concepto** (tabla) con **práctica** en la maqueta.
 
 **Aprende:** Docker crea dos redes = dos broadcast domains. `router-vlan` tiene dos interfaces (como subinterfaces VLAN terminadas en el router).
 
+#### Maqueta `compose/departamentos` — qué levantas (con routing)
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `pc-ventas`, `pc-rrhh`, `router-vlan` |
+| **Trunk lógico** | `router-vlan` con patas en **dos** VLAN (dos redes Docker) |
+| **Script** | `./montar-rutas.sh` — default gateway en PCs + `ip_forward` en router |
+| **Resultado** | Tráfico ventas → RRHH sale por `10.80.10.254` |
+
+```mermaid
+flowchart LR
+  PV[pc-ventas] -->|"access VLAN 10"| RV[router-vlan]
+  RV -->|"access VLAN 20"| PR[pc-rrhh]
+```
+
 **Levantar la maqueta:**
 
 ```bash

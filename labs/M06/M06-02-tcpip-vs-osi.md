@@ -40,6 +40,21 @@ No hace falta levantar maqueta en todos los pasos; el paso 2 usa la maqueta `cap
 
 **Aprende:** un mismo `curl` atraviesa las cuatro capas TCP/IP aunque solo veas la URL.
 
+#### Maqueta `compose/capas` — qué levantas
+
+Misma maqueta que [M06-01](M06-01-modelo-osi.md): `servidor-web` + `cliente-capas` en `192.168.57.0/24`. Aquí mapeas cada prueba a capas OSI vs modelo TCP/IP de 4 capas.
+
+```mermaid
+flowchart TB
+  subgraph tcpip["TCP/IP"]
+    APP[Aplicación]
+    TRAN[Transporte]
+    NET[Internet]
+    ACC[Acceso a red]
+  end
+  CLI[cliente-capas] --> SRV[servidor-web]
+```
+
 **Levantar la maqueta:**
 
 ```bash

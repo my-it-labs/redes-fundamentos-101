@@ -18,6 +18,17 @@ En cada paso: **levantar la maqueta** → **acceder al sistema** (sobre todo `fi
 
 **Aprende:** listar reglas antes de cambiarlas evita “reglas fantasma” y ayuda a explicar el tráfico que sí pasa.
 
+#### Maqueta `compose/dmz` — qué levantas
+
+Misma topología que [M05-01](M05-01-dmz.md#maqueta-composedmz--qué-levantas): tres zonas (`LAN`, `DMZ`, `internet`) unidas por `firewall`. Tras `up -d` y `./montar-dmz.sh` endurecerás reglas **dentro** del sistema `firewall`.
+
+```mermaid
+flowchart LR
+  LAN[LAN interna] --> FW[firewall iptables]
+  FW --> DMZ[DMZ :8080]
+  INET[Internet] --> FW
+```
+
 **Levantar la maqueta:**
 
 ```bash

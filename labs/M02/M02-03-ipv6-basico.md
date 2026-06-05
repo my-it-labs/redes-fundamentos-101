@@ -34,6 +34,24 @@ Misma LAN (10.60.1.0/24 en IPv4 de la maqueta)
 
 **Aprende:** en este laboratorio las direcciones globales de práctica las fija el compose (`::10` y `::20`); el script solo añade la ruta por defecto de ejercicio (no SLAAC del proveedor).
 
+#### Maqueta `compose/ipv6` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `nodo-v6-a`, `nodo-v6-b` |
+| **Red** | `lan-v6` — IPv4 `10.60.1.0/24` + IPv6 `2001:db8:101::/64` |
+| **IPv6 fijas** | `nodo-v6-a` → `::10`, `nodo-v6-b` → `::20` |
+| **Script** | `./montar-ipv6.sh` — ruta default IPv6 de práctica |
+
+```mermaid
+flowchart LR
+  subgraph lanv6["2001:db8:101::/64"]
+    A["nodo-v6-a ::10"]
+    B["nodo-v6-b ::20"]
+    A --- B
+  end
+```
+
 **Levantar la maqueta:**
 
 ```bash

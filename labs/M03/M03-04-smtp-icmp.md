@@ -32,6 +32,21 @@ cliente-mail ──ping/traceroute──► servidor-smtp (192.168.55.10)
 
 **Aprende:** el contenedor `boky/postfix` expone un MTA de laboratorio en la LAN `192.168.55.0/24`.
 
+#### Maqueta `compose/correo` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `servidor-smtp` (imagen `boky/postfix`), `cliente-mail` |
+| **Red** | `lan-mail` → `192.168.55.0/24` |
+| **IPs** | Servidor `.10`, cliente `.20` |
+| **Servicio** | SMTP en puerto **25** (arranque ~10–15 s) |
+
+```mermaid
+flowchart LR
+  CLI[cliente-mail .20] -->|"ping / traceroute"| SRV[servidor-smtp .10]
+  CLI -->|"TCP 25 SMTP"| SRV
+```
+
 **Levantar la maqueta:**
 
 ```bash

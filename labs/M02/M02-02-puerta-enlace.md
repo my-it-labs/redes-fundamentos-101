@@ -37,6 +37,30 @@ Conceptos: [Glosario de términos](../../docs/glosario-terminos.md) (gateway, ta
 
 **Aprende:** el script `montar-rutas.sh` pone en cada PC la ruta **default** hacia la IP del router en su subred.
 
+#### Maqueta `compose/dos-subredes` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `pc-red-a`, `pc-red-b`, `router` (2 interfaces) |
+| **Red A** | `192.168.100.0/26` — PC `.10`, router `.62` |
+| **Red B** | `192.168.100.64/26` — PC `.74`, router `.126` |
+| **Script** | `./montar-rutas.sh` — default gateway en cada PC |
+
+```mermaid
+flowchart LR
+  subgraph redA["192.168.100.0/26"]
+    PCA[pc-red-a .10]
+    RA[router .62]
+    PCA --- RA
+  end
+  subgraph redB["192.168.100.64/26"]
+    PCB[pc-red-b .74]
+    RB[router .126]
+    PCB --- RB
+  end
+  RA --- RB
+```
+
 **Levantar la maqueta:**
 
 ```bash

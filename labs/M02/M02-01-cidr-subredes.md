@@ -64,6 +64,23 @@ Red 192.168.50.0/26  →  64 direcciones (2^6)
 
 **Aprende:** `ip addr` muestra la IP y el prefijo que el sistema cree tener en cada interfaz.
 
+#### Maqueta `compose/subredes` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `host-1` (`192.168.50.10/26`), `host-2` (`192.168.50.20/26`) |
+| **Red** | Una subred `lan` → `192.168.50.0/26` (62 hosts útiles) |
+| **Capa** | **L2/L3 mismo segmento** — ping directo, sin router |
+
+```mermaid
+flowchart LR
+  subgraph subred["192.168.50.0/26"]
+    H1[host-1 .10/26]
+    H2[host-2 .20/26]
+    H1 --- H2
+  end
+```
+
 **Levantar la maqueta:**
 
 ```bash
@@ -85,6 +102,8 @@ ip route show
 ```
 
 **Deberías ver:** `192.168.50.10/26` en `eth0`.
+
+**Repaso — leer la línea `inet`:** `192.168.50.10/26` confirma que este host está en la subred que calculaste en el paso 1: red `192.168.50.0`, máscara `/26`. El `/26` en la salida debe coincidir con tu tabla (si no, la IP estaría en otra subred lógica). Ver [M01-01 — `ip -4 addr show`](../M01/M01-01-tipos-redes-topologias.md) si necesitas repasar cada campo.
 
 **Dentro del sistema:** `exit`
 

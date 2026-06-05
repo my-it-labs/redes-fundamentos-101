@@ -49,6 +49,8 @@ exit
 docker compose down
 ```
 
+**Importante:** `docker compose` solo en la **terminal del Codespace**. Dentro de `pc-a` (`root@pc-a:/#`) no existe `docker` — ahí van `ping`, `ip`, etc.
+
 ---
 
 ## Direccionamiento (`ip`)
@@ -68,7 +70,16 @@ ip -4 addr show eth0         # una interfaz
 ip addr add 192.168.1.10/24 dev eth0   # añadir IP (labs, routers)
 ```
 
-**Leer salida:** `inet 172.31.10.2/24` → dirección + longitud de prefijo (CIDR).
+**Leer salida (resumen):**
+
+| En la salida | Significado |
+|--------------|-------------|
+| `lo` + `127.0.0.1` | Loopback (solo el propio sistema). |
+| `eth0` + `UP` | Interfaz de red activa. |
+| `inet 172.31.10.3/24` | IPv4 + prefijo CIDR (máscara). |
+| `brd 172.31.10.255` | Broadcast de la subred. |
+
+Guía detallada la primera vez: [M01-01 — interpretar `ip -4 addr show`](../labs/M01/M01-01-tipos-redes-topologias.md).
 
 ---
 
@@ -125,7 +136,17 @@ ping -c 2 192.168.30.10     # por IP
 ping -c 2 -W 3 10.10.2.3    # espera máx. 3 s por respuesta
 ```
 
-**Leer salida:** `0% packet loss` = OK; `Destination Host Unreachable` = sin ruta o gateway; timeout = filtro o host caído.
+**Leer salida (resumen):**
+
+| En la salida | Significado |
+|--------------|-------------|
+| `0% packet loss` | Hay respuesta del destino. |
+| `ttl=64` en misma LAN | Sin routers en medio. |
+| `ttl=63` o menos | Al menos un salto L3 (router). |
+| `100% packet loss` | Host caído, filtro ICMP o sin ruta. |
+| `Destination Host Unreachable` | Sin ruta o gateway incorrecto. |
+
+Guía detallada: [M01-01](../labs/M01/M01-01-tipos-redes-topologias.md) (pasos 1, 3 y 5).
 
 ---
 

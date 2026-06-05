@@ -20,6 +20,28 @@ Conceptos: [Glosario de términos](../../docs/glosario-terminos.md) · Comandos:
 
 **Aprende:** en una LAN L2, cada host tiene IP (capa 3) y MAC (capa 2). El switch aprende qué MAC está detrás de cada puerto.
 
+#### Maqueta `compose/segmento-l2` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `pc-1`, `pc-2`, `pc-3` |
+| **Red** | `segmento` → `192.168.58.0/24` |
+| **IPs** | `.11`, `.12`, `.13` |
+| **Capa** | Solo **L2** compartido — tabla de vecinos (`ip neigh`) |
+
+```mermaid
+flowchart LR
+  subgraph seg["192.168.58.0/24 · switch L2"]
+    SW((switch))
+    P1[pc-1 .11]
+    P2[pc-2 .12]
+    P3[pc-3 .13]
+    P1 --- SW
+    P2 --- SW
+    P3 --- SW
+  end
+```
+
 **Levantar la maqueta:**
 
 ```bash

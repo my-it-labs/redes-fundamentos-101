@@ -36,6 +36,21 @@ cliente (192.168.56.20)
 
 **Aprende:** un servidor **escucha** en una IP:puerto antes de aceptar conexiones (TCP) o recibir datagramas (UDP).
 
+#### Maqueta `compose/servicios` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `servidor` (listeners TCP/UDP), `cliente` |
+| **Red** | `apps` → `192.168.56.0/24` |
+| **IPs** | Servidor `.10`, cliente `.20` |
+| **Servicios auto** | TCP **8080** (`python3 http.server`), UDP **9999** (`socat`) |
+
+```mermaid
+flowchart LR
+  CLI[cliente .20] -->|"TCP 8080 curl"| SRV[servidor .10]
+  CLI -->|"UDP 9999 nc"| SRV
+```
+
 **Levantar la maqueta:**
 
 ```bash

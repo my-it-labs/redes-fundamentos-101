@@ -34,6 +34,23 @@ Usarás la maqueta [../M01/compose/empresa](../M01/compose/empresa) (tres LAN + 
 
 **Aprende:** cada sede tiene un **gw-*** con una IP hacia la LAN local y otra hacia la WAN `10.255.0.0/24`.
 
+#### Maqueta `compose/empresa` (M01) — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Rol router** | Cada `gw-*` enruta entre su LAN y `wan-mpls` |
+| **LANs** | Oficina `192.168.10.0/24`, sucursales `.20` y `.30` |
+| **WAN** | `10.255.0.0/24` — transporte entre gateways |
+| **Script** | `./montar-rutas.sh` |
+
+```mermaid
+flowchart LR
+  PC[pc-oficina] --> GWO[gw-oficina router]
+  GWO --> WAN[wan-mpls]
+  WAN --> GWS2[gw-sucursal-2]
+  GWS2 --> PCS2[pc-sucursal-2]
+```
+
 **Levantar la maqueta:**
 
 ```bash

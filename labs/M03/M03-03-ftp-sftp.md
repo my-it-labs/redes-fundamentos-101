@@ -37,6 +37,20 @@ En este lab practicas **SFTP**; FTP activo/pasivo es conceptual (puertos 20/21 y
 
 **Aprende:** SFTP autentica como SSH y opera sobre el canal seguro (puerto **22** por defecto).
 
+#### Maqueta `compose/sftp` — qué levantas
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `servidor-sftp` (sshd + chroot), `cliente-ftp` |
+| **Red** | `lan-ftp` → `192.168.54.0/24` |
+| **IPs** | Servidor `.10`, cliente `.20` |
+| **Credenciales** | `alumno` / `lab101` — ficheros en `/home/alumno/datos` |
+
+```mermaid
+flowchart LR
+  CLI[cliente-ftp .20] -->|"TCP 22 SFTP"| SRV[servidor-sftp .10]
+```
+
 **Levantar la maqueta:**
 
 ```bash

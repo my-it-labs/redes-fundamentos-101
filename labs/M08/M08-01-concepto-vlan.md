@@ -21,6 +21,31 @@ Conceptos: [Glosario de términos](../../docs/glosario-terminos.md).
 
 **Aprende:** en la maqueta, cada “VLAN” es una red Docker distinta (`vlan-ventas`, `vlan-rrhh`). Sin router, es como dos switches aislados.
 
+#### Maqueta `compose/departamentos` — qué levantas (sin routing aún)
+
+| Qué aparece | Detalle |
+|-------------|---------|
+| **Sistemas** | `pc-ventas`, `pc-rrhh`, `router-vlan` (sin rutas entre VLANs todavía) |
+| **VLAN ventas** | `vlan-ventas` `10.80.10.0/24` — PC `.10`, router `.254` |
+| **VLAN RRHH** | `vlan-rrhh` `10.80.20.0/24` — PC `.10`, router `.254` |
+| **Importante** | **No** ejecutes `./montar-rutas.sh` en este paso |
+
+```mermaid
+flowchart TB
+  subgraph v1["VLAN ventas 10.80.10.0/24"]
+    PV[pc-ventas .10]
+    RV[router-vlan .254]
+    PV --- RV
+  end
+  subgraph v2["VLAN RRHH 10.80.20.0/24"]
+    PR[pc-rrhh .10]
+    RR[router-vlan .254]
+    PR --- RR
+  end
+```
+
+Las dos VLAN **no** están unidas hasta ejecutar `./montar-rutas.sh` en pasos posteriores.
+
 **Levantar la maqueta:**
 
 ```bash
