@@ -32,7 +32,7 @@ Misma LAN (10.60.1.0/24 en IPv4 de la maqueta)
 
 ### Paso 1 — Levantar y montar IPv6
 
-**Aprende:** en este laboratorio las direcciones globales de práctica se aplican con el script (no SLAAC del proveedor).
+**Aprende:** en este laboratorio las direcciones globales de práctica las fija el compose (`::10` y `::20`); el script solo añade la ruta por defecto de ejercicio (no SLAAC del proveedor).
 
 **Levantar la maqueta:**
 

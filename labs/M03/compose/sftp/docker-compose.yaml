@@ -1,13 +1,14 @@
 services:
   servidor-sftp:
-    image: atmoz/sftp
+    image: lab-host:local
     hostname: servidor-sftp
-    command: alumno:lab101:1001
+    command: ["bash", "/opt/iniciar-sftp.sh"]
+    volumes:
+      - ./datos:/mnt/datos:ro
+      - ./iniciar-sftp.sh:/opt/iniciar-sftp.sh:ro
     networks:
       lan-ftp:
         ipv4_address: 192.168.54.10
-    volumes:
-      - ./datos:/home/alumno/datos
 
   cliente-ftp:
     image: lab-host:local

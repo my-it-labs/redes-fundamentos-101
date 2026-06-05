@@ -42,7 +42,8 @@ iptables -L FORWARD -n -v --line-numbers
 **Deberías ver:**
 
 - Tres interfaces con IP en `10.70.1.254`, `10.70.2.254`, `10.70.100.254`.
-- Política `FORWARD` en **DROP** y varias reglas `ACCEPT` (anota interfaces `eth0`, `eth1`, `eth2` según tu salida).
+- En esta maqueta suele ser: **`eth0` = internet** (`10.70.100.254`), **`eth1` = LAN** (`10.70.1.254`), **`eth2` = DMZ** (`10.70.2.254`). Anota tu salida antes de editar reglas.
+- Política `FORWARD` en **DROP** y varias reglas `ACCEPT`.
 
 **Por qué:** el orden de las reglas importa: la primera coincidencia gana.
 
@@ -63,9 +64,9 @@ docker compose exec -it firewall bash
 **Dentro del sistema `firewall`:**
 
 ```bash
-iptables -D FORWARD -i eth0 -o eth1 -j ACCEPT 2>/dev/null || true
-iptables -A FORWARD -i eth0 -o eth1 -p tcp --dport 22 -d 10.70.2.10 -j ACCEPT
-iptables -A FORWARD -i eth1 -o eth0 -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -D FORWARD -i eth1 -o eth2 -j ACCEPT 2>/dev/null || true
+iptables -A FORWARD -i eth1 -o eth2 -p tcp --dport 22 -d 10.70.2.10 -j ACCEPT
+iptables -A FORWARD -i eth2 -o eth1 -m state --state ESTABLISHED,RELATED -j ACCEPT
 iptables -L FORWARD -n -v --line-numbers
 exit
 ```
@@ -86,7 +87,7 @@ curl -sS -m 3 -o /dev/null -w "%{http_code}\n" http://10.70.2.10:8080/ || echo "
 **Deberías ver:**
 
 - `ping` puede seguir respondiendo si no bloqueaste ICMP (si bloqueaste ICMP en un reto, anótalo).
-- `curl` al **8080** desde interno debería **fallar** tras quitar la regla amplia `eth0→eth1`.
+- `curl` al **8080** desde interno debería **fallar** tras quitar la regla amplia `eth1→eth2`.
 
 **Por qué:** segmentar es **restringir** tráfico entre zonas; la DMZ queda para flujos desde internet controlados, no para uso general de usuarios internos.
 
@@ -96,7 +97,7 @@ curl -sS -m 3 -o /dev/null -w "%{http_code}\n" http://10.70.2.10:8080/ || echo "
 
 ### Paso 3 — Mantener solo el servicio público desde internet
 
-**Aprende:** la regla del script que abre TCP 8080 desde `eth2` hacia `10.70.2.10` debe seguir siendo la vía de acceso externo.
+**Aprende:** la regla del script que abre TCP 8080 desde `eth0` (internet) hacia `10.70.2.10` debe seguir siendo la vía de acceso externo.
 
 **Acceder al sistema `atacante-internet`:**
 
@@ -173,8 +174,8 @@ exit
 **Dentro de `firewall`:**
 
 ```bash
-iptables -I FORWARD 1 -i eth0 -o eth1 -p icmp -j DROP
-iptables -I FORWARD 1 -i eth2 -o eth1 -p icmp -j DROP
+iptables -I FORWARD 1 -i eth1 -o eth2 -p icmp -j DROP
+iptables -I FORWARD 1 -i eth0 -o eth2 -p icmp -j DROP
 ```
 
 Comprueba desde cada cliente; el `curl :8080` desde internet debe seguir en 200.
@@ -187,8 +188,8 @@ Comprueba desde cada cliente; el `curl :8080` desde internet debe seguir en 200.
 <summary>Ver solución</summary>
 
 ```bash
-iptables -A FORWARD -i eth0 -o eth1 -d 10.70.2.10 -p tcp --dport 8080 -j ACCEPT
-iptables -A FORWARD -i eth0 -o eth1 -d 10.70.2.0/24 -j DROP
+iptables -A FORWARD -i eth1 -o eth2 -d 10.70.2.10 -p tcp --dport 8080 -j ACCEPT
+iptables -A FORWARD -i eth1 -o eth2 -d 10.70.2.0/24 -j DROP
 ```
 
 Prueba `curl` al servidor DMZ (OK) y `ping` a otra IP inventada en `.2.0/24` si la añades al compose (DROP).

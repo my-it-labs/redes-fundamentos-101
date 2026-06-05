@@ -1,9 +1,12 @@
 services:
   servidor-dhcp:
-    image: strm/dnsmasq
+    image: lab-host:local
     hostname: servidor-dhcp
+    cap_add:
+      - NET_ADMIN
+    command: ["dnsmasq", "-k", "-C", "/etc/dnsmasq.conf"]
     volumes:
-      - ./dnsmasq-dhcp.conf:/etc/dnsmasq.conf
+      - ./dnsmasq-dhcp.conf:/etc/dnsmasq.conf:ro
     networks:
       lan-dhcp:
         ipv4_address: 192.168.53.254
@@ -11,6 +14,8 @@ services:
   cliente-dhcp:
     image: lab-host:local
     hostname: cliente-dhcp
+    depends_on:
+      - servidor-dhcp
     cap_add:
       - NET_ADMIN
     networks:

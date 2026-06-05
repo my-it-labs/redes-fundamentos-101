@@ -1,9 +1,12 @@
 services:
   servidor-dns:
-    image: strm/dnsmasq
+    image: lab-host:local
     hostname: servidor-dns
+    cap_add:
+      - NET_ADMIN
+    command: ["dnsmasq", "-k", "-C", "/etc/dnsmasq.conf"]
     volumes:
-      - ./dnsmasq.conf:/etc/dnsmasq.conf
+      - ./dnsmasq.conf:/etc/dnsmasq.conf:ro
     networks:
       lan-dns:
         ipv4_address: 192.168.52.2

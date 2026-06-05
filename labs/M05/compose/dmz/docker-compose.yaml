@@ -13,6 +13,8 @@ services:
   servidor-dmz:
     image: lab-host:local
     hostname: servidor-dmz
+    cap_add:
+      - NET_ADMIN
     command: >
       bash -c "python3 -m http.server 8080 --bind 0.0.0.0 & sleep infinity"
     networks:
@@ -22,6 +24,8 @@ services:
   atacante-internet:
     image: lab-host:local
     hostname: atacante-internet
+    cap_add:
+      - NET_ADMIN
     networks:
       internet:
         ipv4_address: 10.70.100.20

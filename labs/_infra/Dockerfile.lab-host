@@ -6,13 +6,16 @@ RUN apt-get update \
         iputils-ping \
         curl \
         dnsutils \
+        dnsmasq \
+        openssh-server \
         iptables \
         netcat-openbsd \
         traceroute \
         iputils-tracepath \
         isc-dhcp-client \
         openssh-client \
-        python3-minimal \
+        sshpass \
+        python3 \
         socat \
     && rm -rf /var/lib/apt/lists/*
 

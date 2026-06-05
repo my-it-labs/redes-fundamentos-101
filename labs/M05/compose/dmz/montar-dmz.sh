@@ -9,9 +9,10 @@ run atacante-internet "ip route replace default via 10.70.100.254"
 
 run firewall "sysctl -w net.ipv4.ip_forward=1"
 run firewall "iptables -F; iptables -P FORWARD DROP"
-run firewall "iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT"
-run firewall "iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT"
-run firewall "iptables -A FORWARD -i eth2 -o eth1 -p tcp -d 10.70.2.10 --dport 8080 -j ACCEPT"
-run firewall "iptables -A FORWARD -i eth1 -o eth2 -p tcp -s 10.70.2.10 --sport 8080 -j ACCEPT"
+# eth0=internet, eth1=LAN, eth2=DMZ (comprueba con ip -4 addr en firewall)
+run firewall "iptables -A FORWARD -i eth1 -o eth2 -j ACCEPT"
+run firewall "iptables -A FORWARD -i eth2 -o eth1 -j ACCEPT"
+run firewall "iptables -A FORWARD -i eth0 -o eth2 -p tcp -d 10.70.2.10 --dport 8080 -j ACCEPT"
+run firewall "iptables -A FORWARD -i eth2 -o eth0 -p tcp -s 10.70.2.10 --sport 8080 -j ACCEPT"
 
 echo "DMZ montada: LAN interna <-> DMZ; internet -> DMZ:8080 permitido."

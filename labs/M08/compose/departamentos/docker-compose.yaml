@@ -6,6 +6,8 @@ services:
     hostname: pc-ventas
     cap_add:
       - NET_ADMIN
+    extra_hosts:
+      - "pc-rrhh:10.80.20.10"
     networks:
       vlan-ventas:
         ipv4_address: 10.80.10.10
