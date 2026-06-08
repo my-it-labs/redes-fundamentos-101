@@ -320,11 +320,13 @@ Dentro de `nodo-a`, `ip -4 addr show` debería mostrar **dos bloques** `inet` en
 
 **Haces (romper el anillo):** quita a `nodo-b` del segmento `bc` — es como cortar un tramo del anillo:
 
-**En tu terminal (maqueta):**
+**En tu terminal (maqueta, carpeta `anillo`):**
 
 ```bash
-docker network disconnect anillo_bc nodo-b
+./romper-anillo.sh
 ```
+
+(O manualmente: `docker network disconnect anillo_bc "$(docker compose ps -q nodo-b)"` — **no** uses solo `nodo-b`: ese nombre no es el del contenedor en Docker.)
 
 **Dentro del sistema `nodo-a`** (misma sesión o vuelve a entrar con `exec`):
 
@@ -343,10 +345,22 @@ ping -c 2 10.10.2.3
 **En tu terminal (maqueta):**
 
 ```bash
-docker network connect anillo_bc nodo-b
-./montar-rutas.sh
-docker compose down
+./restaurar-anillo.sh
 ```
+
+El script vuelve a conectar `nodo-b` al segmento `bc`, aplica rutas y **comprueba** el `ping` a `10.10.2.3`. Si algo falla, verás `FALLO` y el script termina con error (no sigas al paso 4 hasta que ponga «verificadas»).
+
+<details>
+<summary>Si el ping a 10.10.2.3 falla tras montar-rutas.sh</summary>
+
+Síntoma típico: `ping 10.10.1.3` OK, `ping 10.10.2.3` falla, pero desde `nodo-b` el ping a `10.10.2.3` sí va.
+
+1. Actualiza el repo: `git pull`
+2. Recrea la maqueta: `docker compose down -v && docker compose up -d`
+3. `./montar-rutas.sh` (debe mostrar cuatro líneas `OK` y «verificadas»)
+4. Si persiste, revisa rutas basura en `nodo-b`: `docker compose exec -T nodo-b ip route` — **no** debe aparecer `10.10.1.2 via 10.10.2.3`
+
+</details>
 
 ---
 
@@ -605,14 +619,12 @@ Usas el mismo gateway y rutas que ya configuró `montar-rutas.sh` para el resto 
 
 **Dentro de `nodo-a`:** `ping -c 2 10.10.2.3` (debe funcionar)
 
-**Maqueta:** `docker network disconnect anillo_bc nodo-b`
+**Maqueta:** `./romper-anillo.sh`
 
 **Dentro de `nodo-a`:** `ping -c 2 10.10.2.3` (debe fallar)
 
-**Maqueta:** `docker network connect anillo_bc nodo-b`, `./montar-rutas.sh`
+**Maqueta:** `./restaurar-anillo.sh`
 
 **Dentro de `nodo-a`:** `ping -c 2 10.10.2.3` (debe volver)
-
-**Maqueta:** `docker compose down`
 
 </details>

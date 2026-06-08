@@ -28,13 +28,20 @@ docker compose exec -it pc-a bash
 docker compose down
 ```
 
+## Validar todas las maquetas M01 (profesor / CI)
+
+```bash
+cd labs/M01/compose
+./validar-m01.sh
+```
+
 ## Qué cubre Compose en este curso
 
 | Arquitectura | Carpeta | Cómo se simula |
 |--------------|---------|----------------|
 | Estrella | `estrella/` | Un bridge = switch; todos los nodos en la misma red |
 | Bus | `bus/` | Medio compartido L2 (misma idea que estrella en la maqueta) |
-| Anillo | `anillo/` | Cada nodo en dos redes; rutas estáticas (`montar-rutas.sh`) |
+| Anillo | `anillo/` | Cada nodo en dos redes; rutas estáticas (`montar-rutas.sh`, verifica ping) |
 | Malla parcial | `malla/` | Triángulo con tres enlaces y rutas alternativas |
 | LAN + WAN (oficina/sucursales) | `empresa/` | Varias LAN + red `wan-mpls`; routers en dos redes |
 | PAT / NAT | `nat-pat/` | LAN interna + internet; `MASQUERADE` en el gateway |
