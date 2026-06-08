@@ -24,10 +24,9 @@ services:
   router-vlan:
     image: lab-host:local
     hostname: router-vlan
+    privileged: true
     cap_add:
       - NET_ADMIN
-    sysctls:
-      - net.ipv4.ip_forward=1
     networks:
       vlan-ventas:
         ipv4_address: 10.80.10.254

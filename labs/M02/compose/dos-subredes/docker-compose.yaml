@@ -22,10 +22,9 @@ services:
   router:
     image: lab-host:local
     hostname: router
+    privileged: true
     cap_add:
       - NET_ADMIN
-    sysctls:
-      - net.ipv4.ip_forward=1
     networks:
       red-a:
         ipv4_address: 192.168.100.62

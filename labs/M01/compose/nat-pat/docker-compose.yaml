@@ -29,10 +29,9 @@ services:
   gateway-nat:
     image: lab-host:local
     hostname: gateway-nat
+    privileged: true
     cap_add:
       - NET_ADMIN
-    sysctls:
-      - net.ipv4.ip_forward=1
     networks:
       lan-interna:
         ipv4_address: 10.200.1.254

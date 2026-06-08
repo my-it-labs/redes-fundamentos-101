@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if ! id alumno &>/dev/null; then
-  useradd -m -d /home/alumno -s /usr/sbin/nologin alumno
+  useradd -M -d /datos -s /usr/sbin/nologin alumno
   echo 'alumno:lab101' | chpasswd
 fi
 
@@ -18,6 +18,7 @@ PasswordAuthentication yes
 KbdInteractiveAuthentication no
 Subsystem sftp internal-sftp
 Match User alumno
+    PasswordAuthentication yes
     ChrootDirectory /home/alumno
     ForceCommand internal-sftp
     AllowTcpForwarding no

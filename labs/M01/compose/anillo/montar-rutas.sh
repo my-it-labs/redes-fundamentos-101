@@ -1,49 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 cd "$(dirname "$0")"
-
-run() {
-  docker compose exec -T "$1" bash -c "$2"
-}
-
-# Docker (Codespace) descarta paquetes reenviados cuya IP origen no pertenece
-# a la subred del bridge de salida. NAT en cada router lo evita.
-configurar_host() {
-  if command -v sudo >/dev/null 2>&1; then
-    sudo sysctl -w net.bridge.bridge-nf-call-iptables=0 >/dev/null 2>&1 || true
-    sudo iptables -I DOCKER-USER -j ACCEPT >/dev/null 2>&1 || true
-  fi
-  sysctl -w net.bridge.bridge-nf-call-iptables=0 >/dev/null 2>&1 || true
-  iptables -I DOCKER-USER -j ACCEPT >/dev/null 2>&1 || true
-}
-
-habilitar_router() {
-  local nodo=$1
-  run "$nodo" '
-    echo 1 > /proc/sys/net/ipv4/ip_forward
-    echo 1 > /proc/sys/net/ipv4/conf/all/forwarding
-    for f in /proc/sys/net/ipv4/conf/*/forwarding; do
-      echo 1 > "$f" 2>/dev/null || true
-    done
-    for f in /proc/sys/net/ipv4/conf/*/rp_filter; do
-      echo 0 > "$f" 2>/dev/null || true
-    done
-    iptables -P FORWARD ACCEPT 2>/dev/null || true
-    iptables -F FORWARD 2>/dev/null || true
-    iptables -A FORWARD -j ACCEPT 2>/dev/null || true
-    iptables -t nat -F POSTROUTING 2>/dev/null || true
-    for iface in eth0 eth1; do
-      [ -d "/sys/class/net/$iface" ] || continue
-      iptables -t nat -A POSTROUTING -o "$iface" -j MASQUERADE
-    done
-    test "$(cat /proc/sys/net/ipv4/ip_forward)" = "1"
-  ' || {
-    echo "ERROR: no se pudo configurar $nodo. Recrea contenedores:" >&2
-    echo "  docker compose down && docker compose up -d --force-recreate" >&2
-    exit 1
-  }
-}
+source "$(dirname "$0")/../../../_infra/scripts/montar-lib.sh"
 
 limpiar_host_routes() {
   local nodo=$1
@@ -57,8 +15,7 @@ limpiar_host_routes() {
   '
 }
 
-configurar_host
-
+configurar_host_docker
 for n in nodo-a nodo-b nodo-c nodo-d; do
   habilitar_router "$n"
   limpiar_host_routes "$n"
@@ -71,20 +28,9 @@ run nodo-d "ip route replace 10.10.1.0/29 via 10.10.4.2; ip route replace 10.10.
 
 fallos=0
 for prueba in "nodo-a:10.10.1.3" "nodo-a:10.10.2.3" "nodo-a:10.10.3.2" "nodo-a:10.10.4.3"; do
-  origen=${prueba%%:*}
-  destino=${prueba##*:}
-  if docker compose exec -T "$origen" ping -c 1 -W 3 "$destino" >/dev/null 2>&1; then
-    echo "  OK  $origen -> $destino"
-  else
-    echo "  FALLO  $origen -> $destino"
-    fallos=$((fallos + 1))
-  fi
+  o=${prueba%%:*}; d=${prueba##*:}
+  if verificar_ping "$o" "$d"; then echo "  OK  $o -> $d"; else echo "  FALLO  $o -> $d"; fallos=$((fallos+1)); fi
 done
 
-if [[ "$fallos" -gt 0 ]]; then
-  echo ""
-  echo "ERROR: ejecuta ./diagnostico.sh y pega la salida."
-  exit 1
-fi
-
+[[ "$fallos" -eq 0 ]] || { echo "ERROR: ./diagnostico.sh"; exit 1; }
 echo "Rutas del anillo aplicadas y verificadas."

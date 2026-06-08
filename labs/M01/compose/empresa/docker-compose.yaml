@@ -31,10 +31,9 @@ services:
   gw-oficina:
     image: lab-host:local
     hostname: gw-oficina
+    privileged: true
     cap_add:
       - NET_ADMIN
-    sysctls:
-      - net.ipv4.ip_forward=1
     networks:
       lan-oficina:
         ipv4_address: 192.168.10.254
@@ -44,10 +43,9 @@ services:
   gw-sucursal-1:
     image: lab-host:local
     hostname: gw-sucursal-1
+    privileged: true
     cap_add:
       - NET_ADMIN
-    sysctls:
-      - net.ipv4.ip_forward=1
     networks:
       lan-sucursal-1:
         ipv4_address: 192.168.20.254
@@ -57,10 +55,9 @@ services:
   gw-sucursal-2:
     image: lab-host:local
     hostname: gw-sucursal-2
+    privileged: true
     cap_add:
       - NET_ADMIN
-    sysctls:
-      - net.ipv4.ip_forward=1
     networks:
       lan-sucursal-2:
         ipv4_address: 192.168.30.254

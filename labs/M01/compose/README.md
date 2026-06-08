@@ -28,12 +28,17 @@ docker compose exec -it pc-a bash
 docker compose down
 ```
 
-## Validar todas las maquetas M01 (profesor / CI)
+## Validar maquetas
 
 ```bash
-cd labs/M01/compose
-./validar-m01.sh
+# Todas las maquetas M01–M08 (~5 min)
+cd labs && ./validar-todos.sh
+
+# Solo M01
+cd labs/M01/compose && ./validar-m01.sh
 ```
+
+Tras `git pull`, en maquetas con routers: `docker compose down && docker compose up -d --force-recreate && ./montar-rutas.sh`
 
 ## Qué cubre Compose en este curso
 
