@@ -284,9 +284,12 @@ Cada flecha es una **red distinta**; `nodo-b`, `nodo-c`, etc. tienen **dos inter
 
 ```bash
 cd ../anillo
-docker compose up -d
+docker compose down
+docker compose up -d --force-recreate
 ./montar-rutas.sh
 ```
+
+`--force-recreate` es importante tras un `git pull`: los nodos necesitan recrearse con `privileged: true` para que el reenvío IP (`ip_forward`) funcione en Codespace.
 
 **Acceder al sistema `nodo-a`:**
 
@@ -356,9 +359,9 @@ El script vuelve a conectar `nodo-b` al segmento `bc`, aplica rutas y **comprueb
 Síntoma típico: `ping 10.10.1.3` OK, `ping 10.10.2.3` falla, pero desde `nodo-b` el ping a `10.10.2.3` sí va.
 
 1. Actualiza el repo: `git pull`
-2. Recrea la maqueta: `docker compose down -v && docker compose up -d`
+2. Recrea contenedores: `docker compose down && docker compose up -d --force-recreate`
 3. `./montar-rutas.sh` (debe mostrar cuatro líneas `OK` y «verificadas»)
-4. Si persiste, revisa rutas basura en `nodo-b`: `docker compose exec -T nodo-b ip route` — **no** debe aparecer `10.10.1.2 via 10.10.2.3`
+4. Si persiste: `./diagnostico.sh` y revisa que en **nodo-b** salga `ip_forward=1`
 
 </details>
 
