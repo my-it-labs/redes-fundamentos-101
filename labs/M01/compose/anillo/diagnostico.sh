@@ -17,6 +17,12 @@ done
 echo "======== nodo-a: ip route get ========"
 docker compose exec -T nodo-a ip route get 10.10.2.3 2>/dev/null || true
 echo ""
+echo "======== nodo-b: NAT POSTROUTING ========"
+docker compose exec -T nodo-b iptables -t nat -L POSTROUTING -n 2>/dev/null || true
+echo ""
+echo "======== nodo-b ping directo a c ========"
+docker compose exec -T nodo-b ping -c1 -W2 10.10.2.3 >/dev/null 2>&1 && echo OK || echo FALLO
+echo ""
 echo "======== pings desde nodo-a ========"
 for ip in 10.10.1.3 10.10.2.3 10.10.3.2 10.10.4.3; do
   printf '%s: ' "$ip"
