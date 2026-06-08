@@ -8,9 +8,10 @@ run() {
 }
 
 # Sentido horario: a -> b -> c -> d -> a
-run nodo-a "ip route add 10.10.2.0/29 via 10.10.1.3; ip route add 10.10.3.0/29 via 10.10.1.3; ip route add 10.10.4.3 via 10.10.1.3"
-run nodo-b "ip route add 10.10.3.0/29 via 10.10.2.3; ip route add 10.10.4.0/29 via 10.10.2.3; ip route add 10.10.1.2 via 10.10.2.3"
-run nodo-c "ip route add 10.10.4.0/29 via 10.10.3.3; ip route add 10.10.1.0/29 via 10.10.3.3; ip route add 10.10.2.2 via 10.10.3.3"
-run nodo-d "ip route add 10.10.1.0/29 via 10.10.4.2; ip route add 10.10.2.0/29 via 10.10.4.2; ip route add 10.10.3.2 via 10.10.4.2"
+# Solo prefijos remotos; no /32 de vecinos en el mismo enlace (romperían ping L2).
+run nodo-a "ip route replace 10.10.2.0/29 via 10.10.1.3; ip route replace 10.10.3.0/29 via 10.10.1.3"
+run nodo-b "ip route replace 10.10.3.0/29 via 10.10.2.3; ip route replace 10.10.4.0/29 via 10.10.2.3"
+run nodo-c "ip route replace 10.10.4.0/29 via 10.10.3.3; ip route replace 10.10.1.0/29 via 10.10.3.3"
+run nodo-d "ip route replace 10.10.1.0/29 via 10.10.4.2; ip route replace 10.10.2.0/29 via 10.10.4.2"
 
 echo "Rutas del anillo aplicadas."
