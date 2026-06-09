@@ -12,7 +12,7 @@ Al terminar debes poder:
 
 En cada paso: **levantar la maqueta** → **acceder al sistema** → comandos **dentro del sistema**.
 
-Conceptos: [Glosario de términos](../../docs/glosario-terminos.md) (máscara/CIDR) · Comandos: [Glosario de herramientas](../../docs/glosario-herramientas.md).
+Conceptos: [Cómo calcular rangos con CIDR](../../docs/calculo-cidr-subredes.md) · [Glosario de términos](../../docs/glosario-terminos.md) · Comandos: [Glosario de herramientas](../../docs/glosario-herramientas.md).
 
 ---
 

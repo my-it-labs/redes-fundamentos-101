@@ -83,7 +83,7 @@ Definiciones breves de los conceptos que aparecen en los laboratorios. Para **co
 |--|--|
 | **Qué es** | Indica qué parte de la IP es **red** y qué parte es **host**. Se escribe como máscara (`255.255.255.0`) o prefijo CIDR (`/24`). |
 | **Para qué sirve** | Saber si dos IP están en la **misma subred** y cuántos hosts caben. |
-| **En el curso** | M02 (cálculo de subredes); en M01 verás el prefijo en `ip addr` (p. ej. `172.31.10.2/24`). |
+| **En el curso** | [Guía de cálculo CIDR](calculo-cidr-subredes.md) · [M02-01](../labs/M02/M02-01-cidr-subredes.md); en M01 verás el prefijo en `ip addr` (p. ej. `172.31.10.2/24`). |
 
 ---
 

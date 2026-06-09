@@ -25,6 +25,7 @@ Aprenderás montando topologías en la maqueta del laboratorio y trabajando **de
 | Herramientas en cada sistema | `ip`, `ping`, `curl`, `iptables` — ya en la imagen `lab-host` |
 | **Glosario de términos** | [Conceptos de red](docs/glosario-terminos.md) (IP, MAC, rutas, NAT, LAN/WAN…) |
 | **Glosario de herramientas** | [Comandos](docs/glosario-herramientas.md) (`ip`, `ping`, `dig`, `ss`, etc.) |
+| **Cálculo CIDR** | [Rangos de IP por prefijo](docs/calculo-cidr-subredes.md) (red, máscara, broadcast, hosts) |
 
 ---
 

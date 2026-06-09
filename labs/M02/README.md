@@ -21,7 +21,7 @@
 | M02-02 | [Puerta de enlace](M02-02-puerta-enlace.md) | `compose/dos-subredes` + `montar-rutas.sh` |
 | M02-03 | [IPv6 básico](M02-03-ipv6-basico.md) | `compose/ipv6` + `montar-ipv6.sh` |
 
-Conceptos: [Glosario de términos](../../docs/glosario-terminos.md) · Comandos: [Glosario de herramientas](../../docs/glosario-herramientas.md).
+Conceptos: [Cálculo CIDR](../../docs/calculo-cidr-subredes.md) · [Glosario de términos](../../docs/glosario-terminos.md) · Comandos: [Glosario de herramientas](../../docs/glosario-herramientas.md).
 
 ## Antes de seguir
 
