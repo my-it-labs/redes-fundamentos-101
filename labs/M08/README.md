@@ -22,7 +22,7 @@
 | M08-02 | [Access y trunk](M08-02-access-trunk.md) | `compose/departamentos` |
 | M08-03 | [Casos prácticos](M08-03-casos-practicos.md) | `compose/departamentos` (+ `pc-voz`) |
 
-Conceptos: [Glosario de términos](../../docs/glosario-terminos.md) · Comandos: [Glosario de herramientas](../../docs/glosario-herramientas.md).
+Conceptos: [Glosario de términos](../../docs/glosario-terminos.md) · Comandos: [Glosario de herramientas](../../docs/glosario-herramientas.md) · Lectura: [Nginx reverse proxy y PLCs](../../docs/nginx-reverse-proxy-plcs.md).
 
 ## Antes de seguir
 

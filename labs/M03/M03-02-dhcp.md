@@ -26,6 +26,48 @@ servidor-dhcp (192.168.53.254)  ──oferta──►  cliente-dhcp
 
 ---
 
+## Apéndice — DHCP por dentro (ejemplo con Scapy)
+
+**Opcional.** La maqueta del paso 1 usa **dnsmasq** (servidor real listo para producción). El script [`compose/dhcp/ejemplo-dhcp-scapy.py`](compose/dhcp/ejemplo-dhcp-scapy.py) hace lo mismo en miniatura: escucha un **DISCOVER** y responde con un **OFFER** construido capa a capa.
+
+Así ves qué campos intervienen antes de usar `dhclient` en el laboratorio:
+
+| Capa | En el OFFER del ejemplo | Para qué sirve |
+|------|-------------------------|----------------|
+| Ethernet | `dst=ff:ff:ff:ff:ff:ff` | El cliente aún no tiene IP; el frame va a broadcast |
+| IP | `src=192.168.1.1`, `dst=255.255.255.255` | Mismo criterio a nivel L3 |
+| UDP | `sport=67`, `dport=68` | Puertos estándar DHCP servidor/cliente |
+| BOOTP | `yiaddr`, `siaddr`, `xid`, `chaddr` | IP ofrecida, servidor, ID de transacción, MAC |
+| DHCP (opciones) | `message-type offer`, `router`, `subnet_mask`, `lease_time`… | Gateway, máscara, DNS, tiempo de concesión |
+
+En la maqueta, esas opciones equivalen a líneas de `dnsmasq-dhcp.conf` (`dhcp-range`, `option:router`, etc.).
+
+**No hace falta ejecutarlo** para completar el laboratorio. Si quieres probarlo en el Codespace (fuera del contenedor):
+
+```bash
+pip install scapy
+cd labs/M03/compose/dhcp
+sudo python3 ejemplo-dhcp-scapy.py
+```
+
+En otra terminal, un cliente en la misma LAN L2 podría hacer `dhclient eth0` y verías el DISCOVER/OFFER en la salida del script. El ejemplo usa la red `192.168.1.0/24` (didáctica); la maqueta del curso usa `192.168.53.0/24`.
+
+<details>
+<summary>Ver el flujo DORA completo frente al script</summary>
+
+| Fase | Quién envía | Qué hace el ejemplo Scapy |
+|------|-------------|---------------------------|
+| **D**iscover | Cliente | Lo captura `sniff` y entra en `handle_dhcp` |
+| **O**ffer | Servidor | Lo construye y envía con `sendp` |
+| **R**equest | Cliente | No implementado (dnsmasq sí en la maqueta) |
+| **A**ck | Servidor | No implementado (dnsmasq sí en la maqueta) |
+
+El script enseña sobre todo la **O** del acrónimo **DORA** y el contenido de un OFFER.
+
+</details>
+
+---
+
 ### Paso 1 — Levantar y leer la configuración del servidor
 
 **Aprende:** el servidor DHCP define **pool**, máscara y opciones (gateway, DNS, lease time).
